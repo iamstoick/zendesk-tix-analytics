@@ -1,11 +1,11 @@
 
-#Ticket Analytics Zendesk App
+# Ticket Analytics Zendesk App
 
 Ticket Analytics is a private Zendesk Support application designed to provide agents with real-time, high-density metrics regarding ticket lifecycles and agent collaboration directly within the ticket sidebar.
 
-##📋 Features
+## 📋 Features
 
-###📊 Comprehensive Metrics
+### 📊 Comprehensive Metrics
 
 The app organizes data into four specialized tabs to help agents understand the ticket context at a glance:
 
@@ -17,7 +17,7 @@ The app organizes data into four specialized tabs to help agents understand the 
 
 * **Agent Activity**: Lists every agent who has interacted with the ticket and the time of their "Last Touch".
 
-###⚡ Technical Highlights
+### ⚡ Technical Highlights
 
 * **Human-Readable Timestamps**: Automatically converts raw date strings into intuitive formats like 4d 18h, 4h 35m, or 1m 23d.
 
@@ -25,7 +25,7 @@ The app organizes data into four specialized tabs to help agents understand the 
 
 * **Real-time Data**: Fetches data concurrently from the Ticket, Ticket Metrics, and Ticket Audit APIs to ensure the most up-to-date information.
 
-###🛠 Installation & Development
+### 🛠 Installation & Development
 
 **Project Structure**
 
@@ -51,11 +51,11 @@ To run the app locally using the Zendesk Apps Tools (ZAT):
    
 3. Append `?zat=true` to your Zendesk ticket URL to load the local version of the app.
 
-###⚙️ Configuration
+### ⚙️ Configuration
 
 The app is configured as a private app and runs in the ticket_sidebar location of Zendesk Support. It utilizes Framework Version 2.0.
 
-###👤 Author
+### 👤 Author
 
 * Name: Gerald Villorente
 * Email: gerald@pantheon.io
