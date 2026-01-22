@@ -129,27 +129,27 @@ If you are maintaining the code, keep these technical constraints in mind:
 
 ## 🚀 Production Deployment Checklist
 
-1. Pre-Packaging Validation
+1. **Pre-Packaging Validation**
     - **Version Control**: Increment the `"version"` number in `manifest.json` (e.g., from `1.0.0` to `1.0.1`) to track updates in the Zendesk Admin Center.
     - **Default Locale**: Verify that `"defaultLocale"` is set to "en" and that the corresponding `translations/en.json` file exists and is valid JSON.
     - **Asset References**: Ensure all icons (`16.png`, `48.png`, `128.png`) listed in the manifest are present in the `assets/` folder.
     - **Clean Code**: Remove any `console.log()` statements used for debugging in `main.js` to keep the production logs clean.
 
-2. Framework & SDK Verification
+2. **Framework & SDK Verification**
     - **SDK Link**: Confirm that `iframe.html` includes the ZAF SDK script tag before `main.js`.
     - **API Endpoints**: Ensure all `client.request` URLs in `main.js` use relative paths (e.g., `/api/v2/...`) rather than hardcoded domain names.
     - **Framework Version**: Double-check that `frameworkVersion` is set to `"2.0"` in the manifest.
 
-3. Packaging the App
+3. **Packaging the App**
     - **Zip Structure**: When creating your `.zip` file, ensure the `manifest.json` is at the root of the zip, not tucked inside a sub-folder.
     - **File Size**: Verify the total package size is within Zendesk's limits (usually 50MB, though this app should be very small).
 
-4. Zendesk Admin Upload
+4. **Zendesk Admin Upload**
     - **Upload Path**: Navigate to **Admin Center > Apps and integrations > Zendesk Support Apps** and use the **Update** or **Upload Private App** button.
     - **Parameters**: If you ever add `parameters` to your manifest, ensure you have the required values ready to enter during the upload process.
     - **App Status**: Once uploaded, verify the app status is "Enabled" and that the icon appears correctly in the sidebar.
 
-5. Post-Deployment Smoke Test
+5. **Post-Deployment Smoke Test**
     - **Tab Switching**: Open a ticket and click through all four tabs (**Overview**, **Milestones**, **History**, **Agents**) to ensure the `resizeApp()` function triggers correctly on each.
     - **Data Accuracy**: Verify that "Since Created" and "Last Touch" timestamps are displaying elapsed time (e.g., `2h 15m`) instead of raw dates.
     - **Role Check**: Test the app with a non-admin agent account to ensure there are no permission-related "N/A" values.
