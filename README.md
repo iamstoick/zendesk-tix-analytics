@@ -62,7 +62,7 @@ The app is configured as a private app and runs in the `ticket_sidebar` location
 * **URL**: https://pantheon.io
 
 ### 👤👤 Contributors
-* @dqlopez
+* [dqlopez](https://github.com/dqlopez)
 
 ## 📖 Agent User Guide: Ticket Analytics
 
