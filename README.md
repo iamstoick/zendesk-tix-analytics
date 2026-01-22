@@ -66,6 +66,7 @@ The app is configured as a private app and runs in the `ticket_sidebar` location
 The Ticket Analytics app provides a deep dive into the lifecycle of a ticket. Use the four tabs at the top of the app to switch between different data views.
 
 1. Ticket Overview Tab
+
   * **Since Created**: Shows the total "age" of the ticket in a human-readable format (e.g., `2d 4h`).
 
   * **Public Comments**: Displays the total count of all public replies made by agents to the customer.
@@ -73,6 +74,7 @@ The Ticket Analytics app provides a deep dive into the lifecycle of a ticket. Us
   * **Internal Comments**: Displays the total count of private internal notes left by agents on the ticket.
 
 2. Service Milestones Tab
+
   * **First Assignment**: The elapsed time between when the ticket was created and when it was first assigned to an agent.
 
   * **Agent First Reply**: The total calendar time it took for an agent to send the very first public response.
@@ -80,6 +82,7 @@ The Ticket Analytics app provides a deep dive into the lifecycle of a ticket. Us
   * **Full Resolution**: The total time taken from ticket creation until the ticket was moved to a "Solved" state.
 
 3. Update History Tab
+
   * **Requester Last Update**: Displays how long ago the customer last sent a message or updated the ticket.
 
   * **Agent Last Update**: Displays how long ago an agent last made a change or comment.
@@ -87,6 +90,7 @@ The Ticket Analytics app provides a deep dive into the lifecycle of a ticket. Us
   * **Assignee Stations**: Shows the number of unique times the "Assignee" field was changed (helps identify if a ticket is being "bounced" between agents).
 
 4. Agent Activity Tab
+
   * **Agents Involved**: A dedicated list showing every agent who has participated in the ticket.
 
   * **Last Touch**: Shows exactly how long ago each specific agent last interacted with this ticket, allowing you to identify who was most recently active.
