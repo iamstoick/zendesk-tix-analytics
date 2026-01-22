@@ -127,7 +127,7 @@
       const months = Math.floor(diff / MONTH);
       diff -= months * MONTH;
       const days = Math.floor(diff / DAY);
-      return `${months}m ${days}d`;
+      return `${months}mo ${days}d`;
     } else if (diff >= DAY) {
       const days = Math.floor(diff / DAY);
       diff -= days * DAY;
