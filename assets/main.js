@@ -129,8 +129,8 @@
     const formattedRequesterUpdate = formatTimeDifference(metrics.requester_updated_at)
     document.getElementById('requester-update').textContent = formattedRequesterUpdate !== 'N/A' ? `${formattedRequesterUpdate}` : 'N/A';
 
-    const firstReplyTime = metrics.reply_time_in_minutes.calendar || 'N/A';
-    document.getElementById('first-reply-time').textContent = firstReplyTime !== 'N/A' ? `${firstReplyTime} min` : 'N/A';
+    const firstReplyTime = formatMinutes(metrics.reply_time_in_minutes.calendar) || 'N/A';
+    document.getElementById('first-reply-time').textContent = firstReplyTime !== 'N/A' ? `${firstReplyTime}` : 'N/A';
 
     const fullResolutionTime = formatMinutes(metrics.full_resolution_time_in_minutes.calendar) || 'N/A';
     document.getElementById('full-resolution').textContent = fullResolutionTime !== '0m' ? `${fullResolutionTime}` : 'N/A';
