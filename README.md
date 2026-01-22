@@ -55,11 +55,14 @@ To run the app locally using the Zendesk Apps Tools (ZAT):
 
 The app is configured as a private app and runs in the `ticket_sidebar` location of Zendesk Support. It utilizes **Framework Version 2.0**.
 
-## 👤 Author
+## 👤 Authors
 
 * **Name**: Gerald Villorente
 * **Email**: gerald@pantheon.io
 * **URL**: https://pantheon.io
+
+### 👤👤 Contributors
+* @dqlopez
 
 ## 📖 Agent User Guide: Ticket Analytics
 
