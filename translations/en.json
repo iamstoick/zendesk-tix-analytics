@@ -1,0 +1,6 @@
+{
+  "app": {
+    "name": "Ticket Analytics",
+    "description": "Custom metrics for ticket analysis and agent activity."
+  }
+}

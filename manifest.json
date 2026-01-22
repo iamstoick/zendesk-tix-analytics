@@ -1,0 +1,25 @@
+{
+  "name": "Ticket Analytics",
+  "author": {
+    "name": "Gerald Villorente",
+    "email": "gerald@pantheon.io",
+    "url": "https://pantheon.io"
+  },
+  "defaultLocale": "en",
+  "private": true,
+  "location": {
+    "support": {
+      "ticket_sidebar": {
+        "url": "assets/iframe.html",
+        "flexible": true
+      }
+    }
+  },
+  "icons": {
+    "16": "assets/16.png",
+    "48": "assets/48.png",
+    "128": "assets/128.png"
+  },
+  "version": "1.0.0",
+  "frameworkVersion": "2.0"
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ticket Metrics</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@zendeskgarden/css-components@8.x.x/dist/index.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="zaf-app">
+    <ul class="tab-nav">
+        <li class="tab-nav-item active" data-tab="overview">Ticket Overview</li>
+        <li class="tab-nav-item" data-tab="milestones">Service Milestones</li>
+        <li class="tab-nav-item" data-tab="history">Update History</li>
+        <li class="tab-nav-item" data-tab="agents">Agent Activity</li>
+    </ul>
+
+    <div id="overview" class="tab-content active">
+        <div class="data-grid">
+            <div class="grid-item">
+                <div class="value" id="created-date">...</div>
+                <div class="label">Since Created</div>
+            </div>
+            <div class="grid-item">
+                <div class="value" id="public-replies">...</div>
+                <div class="label">Public Comments</div>
+            </div>
+            <div class="grid-item">
+                <div class="value" id="internal-replies">...</div>
+                <div class="label">Internal Comments</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="milestones" class="tab-content">
+        <div class="data-grid">
+            <div class="grid-item">
+                <div class="value" id="first-assign-time">...</div>
+                <div class="label">First Assignment</div>
+            </div>
+            <div class="grid-item">
+                <div class="value" id="first-reply-time">...</div>
+                <div class="label">Agent First Reply</div>
+            </div>
+            <div class="grid-item">
+                <div class="value" id="full-resolution">...</div>
+                <div class="label">Full Resolution</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="history" class="tab-content">
+        <div class="data-grid">
+            <div class="grid-item">
+                <div class="value" id="requester-update">...</div>
+                <div class="label">Requester Last Update</div>
+            </div>
+            <div class="grid-item">
+                <div class="value" id="agent-update">...</div>
+                <div class="label">Agent Last Update</div>
+            </div>
+            <div class="grid-item">
+                <div class="value" id="assignee-stations">...</div>
+                <div class="label">Assignee Stations</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="agents" class="tab-content">
+        <div class="grid-full-width">
+            <div class="label agents-header-row">
+                <span class="agent-name-header">Agents Involved</span>
+                <span class="agent-time-header">Last Touch</span>
+            </div>
+            <div class="value agents-involved" id="agent-list-container">
+                <div class="agent-row"><span class="agent-name">Loading...</span></div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript to handle tab switching logic
+    // JavaScript to handle tab switching logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.tab-nav-item');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetId = tab.getAttribute('data-tab');
+
+                // 1. Deactivate all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // 2. Activate the clicked tab and its content
+                tab.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+
+                // 3. Wait for the browser to apply the new active state, 
+                // then call the resize function.
+                // We use a check to ensure resizeApp is loaded from main.js.
+                if (typeof resizeApp === 'function') {
+                    // This call will recalculate the height based ONLY on the 
+                    // content of the newly active tab.
+                    resizeApp();
+                }
+            });
+        });
+        
+        // Initial resize for the default tab content after the DOM is ready.
+        if (typeof resizeApp === 'function') {
+             // You may want to delay this slightly if main.js is slow to load data
+             // setTimeout(resizeApp, 50); 
+             resizeApp();
+        }
+    });
+  </script>
+  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+</body>
+</html>
