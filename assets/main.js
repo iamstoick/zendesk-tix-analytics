@@ -22,27 +22,57 @@
       audits: { url: `/api/v2/tickets/${ticketId}/audits.json?include=users`, timeout }
     };
 
+    // 1. Critical Path: Fetch Ticket & Metrics immediately for "Fast" first paint
     Promise.all([
       client.request(requests.ticket),
-      client.request(requests.metrics),
-      client.request(requests.audits)
+      client.request(requests.metrics)
     ])
-    .then(results => {
-      const ticket = results[0].ticket;
-      const metrics = results[1].ticket_metric;
-      const audits = results[2].audits;
-      const users = results[2].users;
+      .then(results => {
+        const ticket = results[0].ticket;
+        const metrics = results[1].ticket_metric;
 
-      displayBasicInfo(ticket);
-      calculateAndDisplayTimes(ticket, metrics);
-      calculateAndDisplayAgentActivity(ticket.requester_id, audits, users);
-      resizeApp();
-    })
-    .catch(error => {
-      console.error('Error fetching Zendesk data:', error);
-      document.getElementById('created-date').textContent = 'Error loading data.';
-      resizeApp();
-    });
+        displayBasicInfo(ticket);
+        calculateAndDisplayTimes(ticket, metrics);
+        resizeApp();
+
+        // 2. Background Path: Fetch Audits after core data is done (or in parallel, but handled separately)
+        // We pass ticket.requester_id needed for the calculation
+        fetchAuditData(ticket.requester_id, requests.audits);
+      })
+      .catch(error => {
+        console.error('Error fetching core ticket data:', error);
+        document.getElementById('created-date').textContent = 'Error loading basic info.';
+        resizeApp();
+      });
+  }
+
+  function fetchAuditData(requesterId, auditRequestConfig) {
+    // Show Loading state for the sections dependent on this data
+    const loadingText = 'Loading...';
+    document.getElementById('public-replies').textContent = loadingText;
+    document.getElementById('internal-replies').textContent = loadingText;
+    document.getElementById('agent-update').textContent = loadingText;
+
+    client.request(auditRequestConfig)
+      .then(result => {
+        const audits = result.audits;
+        const users = result.users;
+
+        calculateAndDisplayAgentActivity(requesterId, audits, users);
+        resizeApp(); // Resize again once new content is loaded
+      })
+      .catch(error => {
+        console.error('Error fetching audit data:', error);
+        const errorText = 'N/A';
+        document.getElementById('public-replies').textContent = errorText;
+        document.getElementById('internal-replies').textContent = errorText;
+        document.getElementById('agent-update').textContent = errorText;
+
+        const agentListContainer = document.getElementById('agent-list-container');
+        agentListContainer.innerHTML = '<div class="agent-row"><span class="agent-name">Error loading agents</span></div>';
+
+        resizeApp();
+      });
   }
 
   function formatTimeDifference(pastDateString) {
@@ -89,9 +119,9 @@
   }
 
   function calculateAndDisplayTimes(ticket, metrics) {
-    let assignTime = metrics.initially_assigned_at ? 
-        Math.round((new Date(metrics.initially_assigned_at) - new Date(metrics.created_at)) / (1000 * 60)) : 
-        'N/A';
+    let assignTime = metrics.initially_assigned_at ?
+      Math.round((new Date(metrics.initially_assigned_at) - new Date(metrics.created_at)) / (1000 * 60)) :
+      'N/A';
     const formattedAssignTime = formatMinutes(assignTime);
     document.getElementById('first-assign-time').textContent = formattedAssignTime !== 'N/A' ? `${formattedAssignTime}` : 'N/A';
 
@@ -109,9 +139,9 @@
 
     function formatMinutes(totalMinutes) {
       if (totalMinutes === 'N/A' || totalMinutes === 0) return 'N/A';
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-        if (hours > 0) return `${hours}h ${minutes}m`;
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      if (hours > 0) return `${hours}h ${minutes}m`;
       return `${minutes}m`;
     }
   }
@@ -125,8 +155,8 @@
     let agentLastTouchMap = {};
 
     const userMap = users.reduce((map, user) => {
-        map[user.id] = user;
-        return map;
+      map[user.id] = user;
+      return map;
     }, {});
 
     let requesterLastMs = 0;
@@ -172,8 +202,8 @@
       }
     }
 
-    const formattedAgentUpdate = agentLastUpdateTimestamp 
-      ? formatTimeDifference(agentLastUpdateTimestamp) 
+    const formattedAgentUpdate = agentLastUpdateTimestamp
+      ? formatTimeDifference(agentLastUpdateTimestamp)
       : 'N/A';
 
     document.getElementById('public-replies').textContent = agentRepliesCount;
