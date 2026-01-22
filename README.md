@@ -47,7 +47,7 @@ To run the app locally using the Zendesk Apps Tools (ZAT):
 
 1. Navigate to the project root directory.
 
-2. Start the local server: `zat server`
+2. Start the local server: `zat server`. If you don't have ZAT yet, you can install it in your machine by following [this guide]([https://pages.github.com/](https://developer.zendesk.com/documentation/apps/zendesk-app-tools-zat/installing-and-using-zat/)).
    
 3. Append `?zat=true` to your Zendesk ticket URL to load the local version of the app.
 
