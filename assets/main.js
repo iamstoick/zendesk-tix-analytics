@@ -49,27 +49,63 @@
   function fetchAuditData(requesterId, auditRequestConfig) {
     // Show Loading state for the sections dependent on this data
     const loadingHtml = '<div class="loader"></div>';
-    document.getElementById('public-replies').innerHTML = loadingHtml;
-    document.getElementById('internal-replies').innerHTML = loadingHtml;
-    document.getElementById('agent-update').innerHTML = loadingHtml;
-    document.getElementById('agent-list-container').innerHTML = loadingHtml;
+
+    // Helper to toggle loading state on parent containers
+    const toggleLoadingState = (elementId, isLoading) => {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      el.innerHTML = isLoading ? loadingHtml : '';
+
+      // Find parent .grid-item or .grid-full-width
+      const parent = el.closest('.grid-item') || el.closest('.grid-full-width');
+      if (parent) {
+        if (isLoading) {
+          parent.classList.add('loading');
+        } else {
+          parent.classList.remove('loading');
+        }
+      }
+    };
+
+    toggleLoadingState('public-replies', true);
+    toggleLoadingState('internal-replies', true);
+    toggleLoadingState('agent-update', true);
+    toggleLoadingState('agent-list-container', true);
 
     client.request(auditRequestConfig)
       .then(result => {
         const audits = result.audits;
         const users = result.users;
 
+        // Clear loading state before calculating (calculating will overwrite innerHTML anyway, 
+        // but we need to remove the CSS class)
+        toggleLoadingState('public-replies', false);
+        toggleLoadingState('internal-replies', false);
+        toggleLoadingState('agent-update', false);
+        toggleLoadingState('agent-list-container', false);
+
         calculateAndDisplayAgentActivity(requesterId, audits, users);
         resizeApp(); // Resize again once new content is loaded
       })
       .catch(error => {
         console.error('Error fetching audit data:', error);
+
+        // Remove loading classes locally
+        toggleLoadingState('public-replies', false);
+        toggleLoadingState('internal-replies', false);
+        toggleLoadingState('agent-update', false);
+        // Note: agent-list-container logic below manually handles its error state
+
         const errorText = 'N/A';
         document.getElementById('public-replies').textContent = errorText;
         document.getElementById('internal-replies').textContent = errorText;
         document.getElementById('agent-update').textContent = errorText;
 
         const agentListContainer = document.getElementById('agent-list-container');
+        // Need to ensure the parent class is definitely removed
+        const parent = agentListContainer.closest('.grid-full-width');
+        if (parent) parent.classList.remove('loading');
+
         agentListContainer.innerHTML = '<div class="agent-row"><span class="agent-name">Error loading agents</span></div>';
 
         resizeApp();

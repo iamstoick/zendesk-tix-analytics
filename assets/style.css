@@ -131,3 +131,13 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Hide labels when the parent container is in a loading state */
+.grid-item.loading .label,
+.grid-full-width.loading .label {
+    visibility: hidden;
+}
+
+/* Optional: Ensure vertical centering when label is gone, 
+   though simply hiding the label might be enough. 
+   Using visibility: hidden keeps the layout stable. */
