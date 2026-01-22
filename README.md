@@ -25,7 +25,7 @@ The app organizes data into four specialized tabs to help agents understand the 
 
 * **Real-time Data**: Fetches data concurrently from the Ticket, Ticket Metrics, and Ticket Audit APIs to ensure the most up-to-date information.
 
-### 🛠 Installation & Development
+## 🛠 Installation & Development
 
 **Project Structure**
 
@@ -55,13 +55,13 @@ To run the app locally using the Zendesk Apps Tools (ZAT):
 
 The app is configured as a private app and runs in the ticket_sidebar location of Zendesk Support. It utilizes Framework Version 2.0.
 
-### 👤 Author
+## 👤 Author
 
 * Name: Gerald Villorente
 * Email: gerald@pantheon.io
 * URL: https://pantheon.io
 
-### 📖 Agent User Guide: Ticket Analytics
+## 📖 Agent User Guide: Ticket Analytics
 
 The Ticket Analytics app provides a deep dive into the lifecycle of a ticket. Use the four tabs at the top of the app to switch between different data views.
 
