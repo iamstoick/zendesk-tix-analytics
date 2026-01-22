@@ -19,7 +19,7 @@ The app organizes data into four specialized tabs to help agents understand the 
 
 ### ⚡ Technical Highlights
 
-* **Human-Readable Timestamps**: Automatically converts raw date strings into intuitive formats like 4d 18h, 4h 35m, or 1m 23d.
+* **Human-Readable Timestamps**: Automatically converts raw date strings into intuitive formats like `4d 18h`, `4h 35m`, or `1m 23d`.
 
 * **Dynamic UI**: Built with a tabbed interface and responsive data grids that automatically resize to fit the sidebar content without scrollbars.
 
@@ -53,20 +53,20 @@ To run the app locally using the Zendesk Apps Tools (ZAT):
 
 ### ⚙️ Configuration
 
-The app is configured as a private app and runs in the ticket_sidebar location of Zendesk Support. It utilizes Framework Version 2.0.
+The app is configured as a private app and runs in the `ticket_sidebar` location of Zendesk Support. It utilizes **Framework Version 2.0**.
 
 ## 👤 Author
 
-* Name: Gerald Villorente
-* Email: gerald@pantheon.io
-* URL: https://pantheon.io
+* **Name**: Gerald Villorente
+* **Email**: gerald@pantheon.io
+* **URL**: https://pantheon.io
 
 ## 📖 Agent User Guide: Ticket Analytics
 
 The Ticket Analytics app provides a deep dive into the lifecycle of a ticket. Use the four tabs at the top of the app to switch between different data views.
 
 1. Ticket Overview Tab
-* **Since Created**: Shows the total "age" of the ticket in a human-readable format (e.g., 2d 4h).
+* **Since Created**: Shows the total "age" of the ticket in a human-readable format (e.g., `2d 4h`).
 
 * **Public Comments**: Displays the total count of all public replies made by agents to the customer.
 
@@ -95,3 +95,41 @@ The Ticket Analytics app provides a deep dive into the lifecycle of a ticket. Us
 * **Auto-Resize**: The app automatically adjusts its height based on the tab you are viewing, so you never have to deal with internal scrollbars.
 
 * **Real-Time Data**: Data is refreshed every time you open a ticket or switch between tabs, ensuring you are looking at the latest metrics.
+
+## 🛠️ Technical Troubleshooting Guide
+
+If the **Ticket Analytics** app is not displaying data correctly or feels "stuck," follow these steps to diagnose and resolve the issue.
+
+### 🔍 Common Issues & Solutions
+
+* **Field shows "..." or "Loading..." indefinitely**
+
+  - **Check API Access**: Ensure your Zendesk user role has permission to view ticket audits and metrics.
+
+  - **Inspect Console**: Open your browser's Developer Tools (F12) and check the Console tab for 401 (Unauthorized) or 403 (Forbidden) errors.
+
+* **Metrics show "N/A"**
+
+  - **Data Availability**: Some metrics, like **First Reply** or **Full Resolution**, only appear after those specific events occur.
+
+  - **Missing Requester Updates**: If a ticket was created by an agent and the customer has never replied, the **Requester Last Update** may remain "N/A".
+
+* **Tab content is cut off**
+
+  - **Refresh Sidebar**: Click the "Refresh" icon at the top of the Zendesk Apps sidebar to trigger a fresh height calculation.
+
+  - **Switch Tabs**: Toggle between tabs once to force the `resizeApp` function to re-run.
+
+* **"ZAFClient is not defined" Error**
+
+  - **Network Connection**: This usually means your browser could not load the Zendesk SDK from `assets.zendesk.com`. Check if your network or firewall is blocking Zendesk's asset CDN.
+
+### 🛠️ Developer Debugging
+
+If you are maintaining the code, keep these technical constraints in mind:
+
+1. **Framework Dependencies**: The app relies on the ZAF SDK v2.0.
+
+2. **API Rate Limits**: The app makes three concurrent API calls (`ticket`, `metrics`, `audits`) every time a ticket is opened. In high-volume environments, ensure you aren't hitting Zendesk API rate limits.
+
+3. **Local Development**: If testing locally, remember to append `?zat=true` to the URL and ensure your local server is running on the port specified in your ZAT configuration.
