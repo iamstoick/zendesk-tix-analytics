@@ -19,7 +19,7 @@ The app organizes data into four specialized tabs to help agents understand the 
 
 ### ⚡ Technical Highlights
 
-* **Human-Readable Timestamps**: Automatically converts raw date strings into intuitive formats like 4d 18h, 4h 35m, or 1m 23d.
+* **Human-Readable Timestamps**: Automatically converts raw date strings into intuitive formats like `4d 18h`, `4h 35m`, or `1m 23d`.
 
 * **Dynamic UI**: Built with a tabbed interface and responsive data grids that automatically resize to fit the sidebar content without scrollbars.
 
@@ -53,45 +53,103 @@ To run the app locally using the Zendesk Apps Tools (ZAT):
 
 ### ⚙️ Configuration
 
-The app is configured as a private app and runs in the ticket_sidebar location of Zendesk Support. It utilizes Framework Version 2.0.
+The app is configured as a private app and runs in the `ticket_sidebar` location of Zendesk Support. It utilizes **Framework Version 2.0**.
 
 ## 👤 Author
 
-* Name: Gerald Villorente
-* Email: gerald@pantheon.io
-* URL: https://pantheon.io
+* **Name**: Gerald Villorente
+* **Email**: gerald@pantheon.io
+* **URL**: https://pantheon.io
 
 ## 📖 Agent User Guide: Ticket Analytics
 
 The Ticket Analytics app provides a deep dive into the lifecycle of a ticket. Use the four tabs at the top of the app to switch between different data views.
 
 1. Ticket Overview Tab
-* **Since Created**: Shows the total "age" of the ticket in a human-readable format (e.g., 2d 4h).
-
-* **Public Comments**: Displays the total count of all public replies made by agents to the customer.
-
-* **Internal Comments**: Displays the total count of private internal notes left by agents on the ticket.
+    - **Since Created**: Shows the total "age" of the ticket in a human-readable format (e.g., `2d 4h`).
+    - **Public Comments**: Displays the total count of all public replies made by agents to the customer.
+    - **Internal Comments**: Displays the total count of private internal notes left by agents on the ticket.
 
 2. Service Milestones Tab
-* **First Assignment**: The elapsed time between when the ticket was created and when it was first assigned to an agent.
-
-* **Agent First Reply**: The total calendar time it took for an agent to send the very first public response.
-
-* **Full Resolution**: The total time taken from ticket creation until the ticket was moved to a "Solved" state.
+    - **First Assignment**: The elapsed time between when the ticket was created and when it was first assigned to an agent.
+    - **Agent First Reply**: The total calendar time it took for an agent to send the very first public response.
+    - **Full Resolution**: The total time taken from ticket creation until the ticket was moved to a "Solved" state.
 
 3. Update History Tab
-* **Requester Last Update**: Displays how long ago the customer last sent a message or updated the ticket.
-
-* **Agent Last Update**: Displays how long ago an agent last made a change or comment.
-
-* **Assignee Stations**: Shows the number of unique times the "Assignee" field was changed (helps identify if a ticket is being "bounced" between agents).
+    - **Requester Last Update**: Displays how long ago the customer last sent a message or updated the ticket.
+    - **Agent Last Update**: Displays how long ago an agent last made a change or comment.
+    - **Assignee Stations**: Shows the number of unique times the "Assignee" field was changed (helps identify if a ticket is being "bounced" between agents).
 
 4. Agent Activity Tab
-* **Agents Involved**: A dedicated list showing every agent who has participated in the ticket.
-
-* **Last Touch**: Shows exactly how long ago each specific agent last interacted with this ticket, allowing you to identify who was most recently active.
+    - **Agents Involved**: A dedicated list showing every agent who has participated in the ticket.
+    - **Last Touch**: Shows exactly how long ago each specific agent last interacted with this ticket, allowing you to identify who was most recently active.
 
 ### 💡 Pro-Tips for Agents
 * **Auto-Resize**: The app automatically adjusts its height based on the tab you are viewing, so you never have to deal with internal scrollbars.
 
 * **Real-Time Data**: Data is refreshed every time you open a ticket or switch between tabs, ensuring you are looking at the latest metrics.
+
+## 🛠️ Technical Troubleshooting Guide
+
+If the **Ticket Analytics** app is not displaying data correctly or feels "stuck," follow these steps to diagnose and resolve the issue.
+
+### 🔍 Common Issues & Solutions
+
+* **Field shows "..." or "Loading..." indefinitely**
+
+  - **Check API Access**: Ensure your Zendesk user role has permission to view ticket audits and metrics.
+
+  - **Inspect Console**: Open your browser's Developer Tools (F12) and check the Console tab for 401 (Unauthorized) or 403 (Forbidden) errors.
+
+* **Metrics show "N/A"**
+
+  - **Data Availability**: Some metrics, like **First Reply** or **Full Resolution**, only appear after those specific events occur.
+
+  - **Missing Requester Updates**: If a ticket was created by an agent and the customer has never replied, the **Requester Last Update** may remain "N/A".
+
+* **Tab content is cut off**
+
+  - **Refresh Sidebar**: Click the "Refresh" icon at the top of the Zendesk Apps sidebar to trigger a fresh height calculation.
+
+  - **Switch Tabs**: Toggle between tabs once to force the `resizeApp` function to re-run.
+
+* **"ZAFClient is not defined" Error**
+
+  - **Network Connection**: This usually means your browser could not load the Zendesk SDK from `assets.zendesk.com`. Check if your network or firewall is blocking Zendesk's asset CDN.
+
+### 🛠️ Developer Debugging
+
+If you are maintaining the code, keep these technical constraints in mind:
+
+1. **Framework Dependencies**: The app relies on the ZAF SDK v2.0.
+
+2. **API Rate Limits**: The app makes three concurrent API calls (`ticket`, `metrics`, `audits`) every time a ticket is opened. In high-volume environments, ensure you aren't hitting Zendesk API rate limits.
+
+3. **Local Development**: If testing locally, remember to append `?zat=true` to the URL and ensure your local server is running on the port specified in your ZAT configuration.
+
+## 🚀 Production Deployment Checklist
+
+1. **Pre-Packaging Validation**
+    - **Version Control**: Increment the `"version"` number in `manifest.json` (e.g., from `1.0.0` to `1.0.1`) to track updates in the Zendesk Admin Center.
+    - **Default Locale**: Verify that `"defaultLocale"` is set to "en" and that the corresponding `translations/en.json` file exists and is valid JSON.
+    - **Asset References**: Ensure all icons (`16.png`, `48.png`, `128.png`) listed in the manifest are present in the `assets/` folder.
+    - **Clean Code**: Remove any `console.log()` statements used for debugging in `main.js` to keep the production logs clean.
+
+2. **Framework & SDK Verification**
+    - **SDK Link**: Confirm that `iframe.html` includes the ZAF SDK script tag before `main.js`.
+    - **API Endpoints**: Ensure all `client.request` URLs in `main.js` use relative paths (e.g., `/api/v2/...`) rather than hardcoded domain names.
+    - **Framework Version**: Double-check that `frameworkVersion` is set to `"2.0"` in the manifest.
+
+3. **Packaging the App**
+    - **Zip Structure**: When creating your `.zip` file, ensure the `manifest.json` is at the root of the zip, not tucked inside a sub-folder.
+    - **File Size**: Verify the total package size is within Zendesk's limits (usually 50MB, though this app should be very small).
+
+4. **Zendesk Admin Upload**
+    - **Upload Path**: Navigate to **Admin Center > Apps and integrations > Zendesk Support Apps** and use the **Update** or **Upload Private App** button.
+    - **Parameters**: If you ever add `parameters` to your manifest, ensure you have the required values ready to enter during the upload process.
+    - **App Status**: Once uploaded, verify the app status is "Enabled" and that the icon appears correctly in the sidebar.
+
+5. **Post-Deployment Smoke Test**
+    - **Tab Switching**: Open a ticket and click through all four tabs (**Overview**, **Milestones**, **History**, **Agents**) to ensure the `resizeApp()` function triggers correctly on each.
+    - **Data Accuracy**: Verify that "Since Created" and "Last Touch" timestamps are displaying elapsed time (e.g., `2h 15m`) instead of raw dates.
+    - **Role Check**: Test the app with a non-admin agent account to ensure there are no permission-related "N/A" values.
