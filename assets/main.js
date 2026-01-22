@@ -48,10 +48,11 @@
 
   function fetchAuditData(requesterId, auditRequestConfig) {
     // Show Loading state for the sections dependent on this data
-    const loadingText = 'Loading...';
-    document.getElementById('public-replies').textContent = loadingText;
-    document.getElementById('internal-replies').textContent = loadingText;
-    document.getElementById('agent-update').textContent = loadingText;
+    const loadingHtml = '<div class="loader"></div>';
+    document.getElementById('public-replies').innerHTML = loadingHtml;
+    document.getElementById('internal-replies').innerHTML = loadingHtml;
+    document.getElementById('agent-update').innerHTML = loadingHtml;
+    document.getElementById('agent-list-container').innerHTML = loadingHtml;
 
     client.request(auditRequestConfig)
       .then(result => {
